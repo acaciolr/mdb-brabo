@@ -285,6 +285,15 @@ def _print_version() -> None:
     c.print(f"  Python {platform.python_version()}  ·  pymongo {pmv}", style="#484f58")
 
 
+def _short_conn_error(exc: Exception) -> str:
+    """pymongo appends the whole topology description to selection errors;
+    the menu that calls --report only needs the first, human part."""
+    msg = str(exc)
+    for cut in (", full error", " (configured timeouts", ", Timeout:"):
+        msg = msg.split(cut)[0]
+    return msg[:300]
+
+
 def _run_report(args) -> int:
     from mongodb_brabo.reports.generator import collect_report_data, exit_code, render_json, render_text
     cfg = config_from_args(args)
@@ -294,7 +303,7 @@ def _run_report(args) -> int:
     try:
         data = collect_report_data(cfg)
     except Exception as exc:
-        print(f"Falha ao gerar relatório: {str(exc).split(', full error')[0]}", file=sys.stderr)
+        print(f"Falha ao gerar relatório: {_short_conn_error(exc)}", file=sys.stderr)
         return 3
     out = render_json(data) if args.report_format == "json" else render_text(data)
     if args.report_output:
