@@ -72,6 +72,12 @@ def test_oplog_window_full_vs_projected():
     # Young oplog (not full): short current window but big projected window → no alarm.
     c.set("oplog.info", {"window_hours": 0.5, "used_pct": 3.0, "projected_window_hours": 300.0, "max_bytes": 1})
     assert "MDB-OPLOG-001" not in _ids(_eval(c))
+    # Very young oplog (real lab case: 2 min of setup writes) → no projection at all.
+    c.set("oplog.info", {"window_hours": 0.03, "used_pct": 0.1, "projected_window_hours": 15.1, "max_bytes": 1})
+    assert "MDB-OPLOG-001" not in _ids(_eval(c))
+    # Observed ≥ 1h and projection still short → WARNING.
+    c.set("oplog.info", {"window_hours": 2.0, "used_pct": 10.0, "projected_window_hours": 15.0, "max_bytes": 1})
+    assert _ids(_eval(c))["MDB-OPLOG-001"].severity == Severity.WARNING
 
 
 def test_long_ops_and_lock_queue():

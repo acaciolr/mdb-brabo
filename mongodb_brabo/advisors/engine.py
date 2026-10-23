@@ -34,6 +34,7 @@ REPL_LAG_WARN_S = 10
 REPL_LAG_CRIT_S = 60
 OPLOG_WINDOW_WARN_H = 24
 OPLOG_WINDOW_CRIT_H = 4
+OPLOG_MIN_OBSERVED_H = 1    # projecting from minutes of setup writes is noise
 LOCK_QUEUE_WARN = 10
 UNUSED_INDEX_TRUST_HOURS = 24 * 7   # less than a week of $indexStats is not proof
 SHARD_CHUNK_SPREAD_WARN = 8
@@ -196,6 +197,8 @@ class AdvisorEngine:
         if not o or o.get("window_hours") is None:
             return []
         full = (o.get("used_pct") or 0) >= 90
+        if not full and o["window_hours"] < OPLOG_MIN_OBSERVED_H:
+            return []  # too young to project (initial sync/setup inflates the rate)
         hours = o["window_hours"] if full else o.get("projected_window_hours")
         if hours is None:
             return []
