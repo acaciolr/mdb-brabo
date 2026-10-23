@@ -13,7 +13,8 @@ from textual.widgets import Static
 
 try:
     import plotext as plt
-    _HAS_PLOTEXT = True
+    # plotext 6.x trocou a API (sem clf/build): trata como ausente
+    _HAS_PLOTEXT = all(hasattr(plt, f) for f in ("clf", "plotsize", "plot", "build"))
 except ImportError:  # optional dependency
     plt = None
     _HAS_PLOTEXT = False
@@ -48,10 +49,7 @@ class Graph(Static):
         if w < 8 or h < 4:
             return
         if not _HAS_PLOTEXT:
-            last = self._values[-1]
-            t = Text(f" {self.label}: {last:,.1f}{self.unit}\n ", style="bold")
-            t.append_text(sparkline(self._values, max(8, w - 4)))
-            self.update(t)
+            self._draw_sparkline(w)
             return
         try:
             plt.clf()
@@ -72,7 +70,14 @@ class Graph(Static):
             plt.xticks([])
             self.update(Text.from_ansi(plt.build()))
         except Exception:
-            pass
+            # nunca ficar preso em "aguardando dados": cai na sparkline
+            self._draw_sparkline(w)
+
+    def _draw_sparkline(self, w: int) -> None:
+        last = self._values[-1]
+        t = Text(f" {self.label}: {last:,.1f}{self.unit}\n ", style="bold")
+        t.append_text(sparkline(self._values, max(8, w - 4)))
+        self.update(t)
 
 
 def sparkline(values, width: int = 30, color: str = "green") -> Text:

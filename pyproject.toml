@@ -15,10 +15,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-charts = ["plotext>=5.2"]
+charts = ["plotext>=5.2,<6"]
 keyring = ["keyring>=24.0"]
-full = ["plotext>=5.2", "keyring>=24.0"]
-dev = ["pytest>=8.0", "pytest-asyncio>=0.23", "plotext>=5.2"]
+full = ["plotext>=5.2,<6", "keyring>=24.0"]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23", "plotext>=5.2,<6"]
 
 [project.scripts]
 mdb-brabo = "app:main"
