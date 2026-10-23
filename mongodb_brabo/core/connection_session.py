@@ -80,8 +80,9 @@ class ConnectionSession:
         if self.config.label:
             return self.config.label
         role = self.capabilities.role_label if self.connected else ""
-        target = self.config.display_target() if self.config.uri else f"{self.config.host}:{self.config.port}"
-        return f"{target} {role}".strip()
+        # host/port are filled from the URI's first node by the CLI, so the
+        # tab stays short even with a long connection string.
+        return f"{self.config.host}:{self.config.port} {role}".strip()
 
     async def connect(self) -> None:
         if self.config.demo:
