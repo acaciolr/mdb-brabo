@@ -26,7 +26,7 @@
 
 O **MDB BRABO** é uma ferramenta de monitoramento e administração de MongoDB que roda 100% no terminal, via SSH. Não precisa de agente, de browser nem de servidor web exposto.
 
-É irmão de arquitetura do **ORA BRABO** (Oracle), do **SQL BRABO** (SQL Server) e do **PG BRABO** (PostgreSQL): mesmo autor, mesmo padrão de cockpit, motor diferente. Numa única interface ele mostra serverStatus, operações em curso, consultas lentas, filas de lock, bancos, coleções, índices, replica set, sharding, WiredTiger, oplog e segurança. Também permite **várias conexões em abas** e segue um princípio rígido: **observa primeiro e só altera quando pedido** (READ ONLY por padrão).
+É irmão de arquitetura do [**ORA BRABO**](https://github.com/acaciolr/ora-brabo) (Oracle), do [**SQL BRABO**](https://github.com/acaciolr/sql-brabo) (SQL Server) e do [**PG BRABO**](https://github.com/acaciolr/pg_brabo) (PostgreSQL): mesmo autor, mesmo padrão de cockpit, motor diferente. Numa única interface ele mostra serverStatus, operações em curso, consultas lentas, filas de lock, bancos, coleções, índices, replica set, sharding, WiredTiger, oplog e segurança. Também permite **várias conexões em abas** e segue um princípio rígido: **observa primeiro e só altera quando pedido** (READ ONLY por padrão).
 
 Usado como opção de **MONITORING** da plataforma de ensino **MONGO SUPER DBA**.
 
