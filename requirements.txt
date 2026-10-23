@@ -1,0 +1,5 @@
+textual>=0.60
+rich>=13.7
+pymongo>=4.6
+plotext>=5.2      # opcional: gráficos (sem ele, sparklines)
+keyring>=24.0     # opcional: senha de perfis salvos no chaveiro do SO
